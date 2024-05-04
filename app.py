@@ -23,10 +23,21 @@ EXP = [{
     'location': 'Outback Steakhouse',
     'salary': '$30,000'
 }]
+'''
+def load_exps_from_db():
+  with engine.connect() as conn:
+    result = conn.execute(text("select * from jobs"))
+    jobs = []
+    for row in result.all():
+      jobs.append(dict(row))
+    return jobs
+
+'''
 
 
 @app.route('/')
 def hello_world():
+  '''exps=load_exps_from_db()'''
   return render_template('home.html', exp=EXP)
 
 
@@ -36,6 +47,5 @@ def list_exps():
   return jsonify(EXP)
 
 
-print("Hello, world")
 if __name__ == "__main__":
   app.run(host='0.0.0.0', debug=True)
